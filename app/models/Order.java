@@ -1,7 +1,10 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -25,7 +28,7 @@ public class Order extends Model{
 	
 	@Required
 	@ManyToMany(cascade=CascadeType.PERSIST)
-	public Set<OrderDetail> orderDetails;
+	public List<OrderDetail> orderDetails;
 	
 	public Date date;
 	
@@ -44,10 +47,36 @@ public class Order extends Model{
 	public int orderPrice;
 	
 	
-	public void addOrderDetail(long mealId){
+	public Order(User user,String orderNum,String  receiver_name,String receiver_addr,String receiver_tel,String receiver_other,String payWay){
+		
+		this.User=user;
+		this.orderNum = orderNum;
+		this.receiver_name =receiver_name;
+		this.receiver_addr = receiver_addr;
+		this.receiver_tel= receiver_tel;
+		this.receiver_other =receiver_other;
+		this.payWay = payWay;
+		this.date = new Date();
+		this.orderDetails= new ArrayList<OrderDetail>();   
+		
+	}
+	
+public Order(String orderNum,String  receiver_name){
 		
 		
+		this.orderNum = orderNum;
+		this.receiver_name =receiver_name;
 		
+		//this.date = new Date();
+		this.orderDetails= new ArrayList<OrderDetail>();  
+		
+	}
+	
+	
+	public Order addOrderDetail(OrderDetail orderDetail){
+		this.orderDetails.add(orderDetail);
+		this.save();
+		return this;
 		
 	}
 	

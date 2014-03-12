@@ -56,11 +56,24 @@ public class Application extends Controller {
     		System.out.println(i+ "row  "+m);
     	}
     	
-    	Order order = new Order();
-    	order.orderNum= "111111";
+    	Order order = new Order("no1234566","aaa");
+    	
+    	
     	
     	OrderDetail orderDetail = new OrderDetail();
+    	orderDetail.mealId= 9;
+    	orderDetail.num= 1;
+    	orderDetail.totalNum = 100;
     	
+    	OrderDetail orderDetail2 = new OrderDetail();
+    	orderDetail2.mealId= 10;
+    	orderDetail2.num= 2;
+    	orderDetail2.totalNum= 120;
+    	
+    	
+    	order.addOrderDetail(orderDetail);
+    	order.addOrderDetail(orderDetail2);
+    	order.save();
     	
     
     	

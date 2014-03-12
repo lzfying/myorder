@@ -8,7 +8,7 @@ import play.db.jpa.Model;
 @Table(name="back_orderdetail")
 public class OrderDetail extends Model{
 	
-	public Meal meal;
+	public int mealId;
 	
 	public int num;
 	
