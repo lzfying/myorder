@@ -12,12 +12,37 @@ GET     /saveOrder                              Application.saveOrder
 
 
 # Adminstration
-GET     /admin/?                                Admin.index
-GET     /admin/myPosts/{id}                     Admin.form
-POST    /admin/myPosts/{id}                     Admin.save
-GET     /admin/new                              Admin.form
-POST    /admin/new                              Admin.save
-*       /admin                                  module:crud
+#GET     /admin/?                                Admin.index
+#GET     /admin/myPosts/{id}                     Admin.form
+#POST    /admin/myPosts/{id}                     Admin.save
+#GET     /admin/new                              Admin.form
+#POST    /admin/new                              Admin.save
+#*       /admin                                  module:crud
+GET      /admin                                  Admin.admin
+GET      /admin/index                            Admin.admin
+GET      /admin/treenode                         Admin.getFuncTreeNode
+GET      /admin/order/orderadmin                 AdminOrders.adminOrder
+GET      /admin/order/getorders                  AdminOrders.getOrders
+POST     /admin/order/saveOrder                  AdminOrders.saveOrder
+POST     /admin/order/deleteOrder                AdminOrders.deleteOrder
+GET      /admin/order/getOrderInfo               AdminOrders.getOrderInfo
+GET      /admin/order/getOrderPaymentid          AdminOrders.getOrderPaymentId
+
+
+GET      /admin/user/useradmin                   AdminUsers.adminUser
+GET      /admin/user/getUsers                    AdminUsers.getUsers
+POST     /admin/user/saveUser                    AdminUsers.saveUser
+POST     /admin/user/deleteUser                  AdminUsers.deleteUser
+GET      /admin/user/getUserInfo                 AdminUsers.getUserInfo
+
+
+GET      /admin/meal/mealadmin                   AdminMeals.adminMeal
+GET      /admin/meal/getMeals                    AdminMeals.getMeals
+GET      /admin/meal/getmealtype                 AdminMeals.getMealType
+POST     /admin/meal/saveMeal                    AdminMeals.saveMeal
+POST     /admin/meal/deleteMeal                  AdminMeals.deleteMeal
+
+
 
 # Import Secure routes
 *       /                                       module:secure

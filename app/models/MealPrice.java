@@ -1,6 +1,8 @@
 package models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import play.db.jpa.Model;
@@ -12,4 +14,6 @@ public class MealPrice extends Model{
 	
 	public int price;//原价
 
+	@OneToOne(mappedBy="price",cascade=CascadeType.ALL)
+	public Meal meal;
 }

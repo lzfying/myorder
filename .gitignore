@@ -1,0 +1,7 @@
+*~
+*orig
+*.bak
+*.old
+.classpath
+.project
+tmp/

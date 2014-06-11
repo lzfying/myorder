@@ -6,11 +6,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
@@ -24,30 +22,16 @@ public class Meal extends Model{
     @MaxSize(200)
     public String name;
 	
-	//@Required
-    @MaxSize(100)
-    public String type;//中式or西式 
-	
-	//@Required
-    @MaxSize(100)
-    public String type2;//口味
-	
-	//@Required
-    @MaxSize(100)
-    public String type3;//
-	
+    @OneToOne(cascade=CascadeType.ALL)
+    public MealType type;//菜品类别，主食、汤类、饮料
 	
     @MaxSize(255)
     public String url;
     
-    public int orderDayNum;//单日订购数量
+    public String des;
     
-    
-    public int orderTotalNum;//订购总量
-    
-    @OneToOne
-    public MealDesc mealDesc;
-    
+    @OneToOne(cascade=CascadeType.ALL)
+    public MealPrice price;
     
     @OneToMany(mappedBy="meal", cascade=CascadeType.ALL)
     public List<Comment> comments;

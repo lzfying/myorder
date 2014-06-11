@@ -44,7 +44,7 @@ public class Order extends Model{
 	
 	public String orderstate;
 	
-	public int orderPrice;
+	public double orderPrice;
 	
 	
 	public Order(User user,String orderNum,String  receiver_name,String receiver_addr,String receiver_tel,String receiver_other,String payWay){
@@ -61,17 +61,6 @@ public class Order extends Model{
 		
 	}
 	
-public Order(String orderNum,String  receiver_name){
-		
-		
-		this.orderNum = orderNum;
-		this.receiver_name =receiver_name;
-		
-		//this.date = new Date();
-		this.orderDetails= new ArrayList<OrderDetail>();  
-		
-	}
-	
 	
 	public Order addOrderDetail(OrderDetail orderDetail){
 		this.orderDetails.add(orderDetail);
@@ -80,7 +69,4 @@ public Order(String orderNum,String  receiver_name){
 		
 	}
 	
-
-	
-
 }
