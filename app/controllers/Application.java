@@ -15,7 +15,14 @@ import models.*;
 public class Application extends Controller {
 
     public static void index() {
-        render();
+    	List<Meal> meals = Meal.all().fetch(0, 10);
+        render(meals);
+    }
+    
+    
+    public static void index2() {
+    	List<Meal> meals = Meal.all().fetch(0, 10);
+        render(meals);
     }
 
     

@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -43,6 +44,7 @@ public class UserDetail extends Model{
 	
 	@OneToOne
     @Required
+    @JoinColumn(name="user_id")
 	public User user;
 	
 	

@@ -4,6 +4,7 @@
 # Home page
 GET     /                                       Application.index
 
+GET     /index2                                Mod.index
 GET     /listMeal                              Application.listMeals
 GET     /orderForm                              Application.doOrder
 
@@ -27,6 +28,7 @@ GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
+GET     /images/                                staticDir:public/images
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
