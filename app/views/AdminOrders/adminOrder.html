@@ -124,6 +124,7 @@
 				alert("请先选择需要编辑的订单！")
 			}
 			var id = "id=" + rows[0].ordernum;
+			
 			$.ajax({
                 url:'/admin/order/getOrderInfo',  
                 type:'GET',
@@ -200,7 +201,7 @@
                     if (mealrows.length == 0 || comborows.length == 0) {
                         alert("请选择菜品！")
                     }
-                    var mealids = "";
+                    var mealids = "&";
                     for(var i=0; i<mealrows.length; i++){
                         mealids += "mealid="+ mealrows[i].id;
                         if (i != mealrows.length - 1) {

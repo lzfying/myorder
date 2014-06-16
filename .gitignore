@@ -2,7 +2,8 @@
 *orig
 *.bak
 *.old
-i.classpath
+.classpath
 .project
 tmp/
 eclipse/classes/
+eclipse/classes/models/

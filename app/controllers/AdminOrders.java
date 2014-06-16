@@ -59,7 +59,7 @@ public class AdminOrders extends Controller {
         return json;
     }
     
-    public static void getOrderInfo(Long id) {
+    public static void getOrderInfo(String id) {
     	Order order = Order.find("byOrderNum", id).first();
     	JsonObject obj = getOrderJsonObj(order);
     	renderText(obj);
@@ -96,6 +96,7 @@ public class AdminOrders extends Controller {
     
     @Transactional
     public static void saveOrder(Order order, Long[] mealid, Long[] comboid) {
+    	System.out.println("==========" + order.date);
     	order.save();
     	if (mealid.length > 0) {
     		for(int i=0;i<mealid.length;i++) {

@@ -30,7 +30,7 @@ public class Order extends Model{
 	public User User;
 	
 	@Required
-	@ManyToMany(cascade=CascadeType.PERSIST)
+	@ManyToMany(cascade=CascadeType.ALL)
 	public List<OrderDetail> orderDetails;
 	
 	public Date date;
