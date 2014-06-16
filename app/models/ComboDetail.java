@@ -5,22 +5,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import play.db.jpa.Model;
+
 @Entity
-@Table(name="back_orderdetail")
-public class OrderDetail extends Model {
-	
+@Table(name="back_combodetail")
+public class ComboDetail extends Model {
+
 	@OneToOne
 	public Meal meal;
-	
-	@OneToOne
-	public Combo combo;
-
-	public double price;
 
 	public int num;
-	
-	public String priceType;
-	
-	public int totalNum;
 
 }

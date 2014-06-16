@@ -8,12 +8,16 @@ import javax.persistence.Table;
 import play.db.jpa.Model;
 @Entity
 @Table(name="back_mealprice")
-public class MealPrice extends Model{
-	//价格策略 1:原价 2：8折 3：6折 
-	public String strategy ="1";
+public class Price extends Model{
 	
-	public int price;//原价
+	public double price;
+
+	public double discount = 10;
 
 	@OneToOne(mappedBy="price",cascade=CascadeType.ALL)
 	public Meal meal;
+
+	@OneToOne(mappedBy="price",cascade=CascadeType.ALL)
+	public Combo combo;
+
 }

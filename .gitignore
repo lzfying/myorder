@@ -2,6 +2,7 @@
 *orig
 *.bak
 *.old
-.classpath
+i.classpath
 .project
 tmp/
+eclipse/classes/

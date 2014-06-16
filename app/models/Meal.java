@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,11 +32,13 @@ public class Meal extends Model{
     public String des;
     
     @OneToOne(cascade=CascadeType.ALL)
-    public MealPrice price;
+    public Price price;
     
-    @OneToMany(mappedBy="meal", cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.PERSIST)
     public List<Comment> comments;
     
+    @ManyToOne
+    public ComboDetail combodetail;
  
     @ManyToMany(cascade=CascadeType.PERSIST)
     public Set<MyTag> tags;

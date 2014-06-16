@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -17,6 +16,10 @@ import play.db.jpa.Model;
 @Entity
 @Table(name="back_order")
 public class Order extends Model{
+	
+	public Order() {
+		orderDetails = new ArrayList<OrderDetail>();
+	}
 	
 	@Required
 	public String orderNum;
@@ -45,7 +48,6 @@ public class Order extends Model{
 	public String orderstate;
 	
 	public double orderPrice;
-	
 	
 	public Order(User user,String orderNum,String  receiver_name,String receiver_addr,String receiver_tel,String receiver_other,String payWay){
 		

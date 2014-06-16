@@ -19,6 +19,7 @@
 				<th data-options="field:'address',width:240,align:'center'">送餐地址</th>
                 <th data-options="field:'name',width:80,align:'center'">联系人</th>
 				<th data-options="field:'tel',width:100,align:'center'">联系电话</th>
+				<th data-options="field:'content',width:100,align:'center'">内容</th>
 				<th data-options="field:'orderstate',width:60,align:'center'">订单状态</th>
 				<th data-options="field:'others',width:200,align:'center'">备注</th>
 			</tr>
@@ -34,7 +35,7 @@
             <a id="query" class="easyui-linkbutton" iconCls="icon-search">查询</a>
 		</div>
 	</div>
-	<div id="editdialog" style="padding:5px;width:600px;height:300px;top:100px" closed="true">
+	<div id="editdialog" style="padding:5px;width:600px;height:auto;top:100px" closed="true">
 	   #{form @AdminOrders.saveOrder(), id:'orderform'}
             <table cellpadding="5">
                 <tr>
@@ -65,6 +66,31 @@
                 </td>
                 </tr>
             </table>
+            <table id="meals" class="easyui-datagrid" style="border: false; width: auto; height: auto" data-options="title:'菜品列表',idField:'id',pagination:true,singleSelect:false,url:'/admin/meal/getMeals',method:'get'">
+                <thead>
+                    <tr>
+                        <th data-options="field:'ck',checkbox:true"></th>
+                        <th data-options="field:'name',width:150,align:'center'">菜品名称</th>
+                        <th data-options="field:'type',width:130,align:'center'">类别</th>
+                        <th data-options="field:'price',width:50,align:'center'">价格</th>
+                        <th data-options="field:'discount',width:130,align:'center'">折扣</th>
+                        <!-- 
+                        <th data-options="field:'num', width:30, align:'center', editor:{type:'numberbox'}">数量</th>
+                         -->
+                    </tr>
+                </thead>
+            </table>
+			<table id="combos" class="easyui-datagrid" style="border: false; width: auto; height: auto" data-options="title:'套餐列表',idField:'id',pagination:true,singleSelect:false,url:'/admin/combo/getCombos',method:'get'">
+			        <thead>
+			            <tr>
+			                <th data-options="field:'ck',checkbox:true"></th>
+			                <th data-options="field:'name',width:150,align:'center'">套餐名称</th>
+			                <th data-options="field:'price',width:50,align:'center'">价格</th>
+			                <th data-options="field:'discount',width:130,align:'center'">折扣</th>
+			                <th data-options="field:'meals',width:240,align:'center'">套餐内容</th>
+			            </tr>
+			        </thead>
+			    </table>
         #{/form}
     </div> 
 	<script type="text/javascript">
@@ -169,11 +195,32 @@
 				iconCls : 'icon-save',
 				handler : function() {
 //					$('#orderform').submit();
+                    var mealrows = $('#meals').datagrid('getSelections');
+                    var comborows = $('#combos').datagrid('getSelections');
+                    if (mealrows.length == 0 || comborows.length == 0) {
+                        alert("请选择菜品！")
+                    }
+                    var mealids = "";
+                    for(var i=0; i<mealrows.length; i++){
+                        mealids += "mealid="+ mealrows[i].id;
+                        if (i != mealrows.length - 1) {
+                        	mealids+="&";
+                        }
+                    }
+                    var comboids = "&";
+                    for(var i=0; i<comborows.length; i++){
+                    	comboids += "comboid="+ comborows[i].id;
+                        if (i != comborows.length - 1) {
+                        	comboids+="&";
+                        }
+                    }
+                    
+                    
                     var form = $("#orderform"); 
                     $.ajax({  
                         url:form.attr('action'),  
                         type:form.attr('method'),  
-                        data:form.serialize(),  
+                        data:form.serialize() + mealids + comboids,  
                         success:function(data){  
                             $("#editdialog").dialog("close");
                             $("#orderdatas").datagrid("reload");

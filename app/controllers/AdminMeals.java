@@ -46,7 +46,7 @@ public class AdminMeals extends Controller {
     	obj.addProperty("id", meal.id);
         obj.addProperty("name", meal.name);
         obj.addProperty("price", meal.price.price);
-        obj.addProperty("discount", meal.price.strategy);
+        obj.addProperty("discount", meal.price.discount);
         obj.addProperty("des", meal.des);
         if (meal.type != null) {
         	DicMealType type = DicMealType.find("type=?", meal.type.mealType).first();

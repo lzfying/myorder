@@ -42,7 +42,9 @@ GET      /admin/meal/getmealtype                 AdminMeals.getMealType
 POST     /admin/meal/saveMeal                    AdminMeals.saveMeal
 POST     /admin/meal/deleteMeal                  AdminMeals.deleteMeal
 
-
+GET      /admin/combo/comboadmin                 AdminCombos.adminCombo
+POST     /admin/combo/saveCombo                  AdminCombos.saveCombo
+GET      /admin/combo/getCombos                  AdminCombos.getCombos
 
 # Import Secure routes
 *       /                                       module:secure

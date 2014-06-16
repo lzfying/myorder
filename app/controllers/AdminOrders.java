@@ -4,10 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
+import models.Combo;
+import models.Meal;
 import models.Order;
-import play.data.binding.As;
+import models.OrderDetail;
+import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.With;
 
@@ -76,11 +78,51 @@ public class AdminOrders extends Controller {
         obj.addProperty("tel", order.receiver_tel);
         obj.addProperty("name", order.receiver_name);
         obj.addProperty("others", order.receiver_other);
+        
+        if (order.orderDetails != null && order.orderDetails.size() > 0) {
+        	StringBuffer sb = new StringBuffer();
+        	for (OrderDetail detail: order.orderDetails) {
+        		if (detail.meal != null) {
+        			sb.append(detail.meal.name);
+        		} else if (detail.combo != null) {
+        			sb.append(detail.combo.name);
+        		}
+        		sb.append("<br>");
+        	}
+        	obj.addProperty("content", sb.toString());
+        }
         return obj;
     }
     
-    public static void saveOrder(Order order) {
+    @Transactional
+    public static void saveOrder(Order order, Long[] mealid, Long[] comboid) {
     	order.save();
+    	if (mealid.length > 0) {
+    		for(int i=0;i<mealid.length;i++) {
+    			Meal meal = Meal.findById(mealid[i]);
+    			if (meal != null) {
+    				OrderDetail detail = new OrderDetail();
+    				detail.meal = meal;
+    				detail.price = meal.price.price;
+    				detail.num = 1;
+    				detail.save();
+    				order.addOrderDetail(detail);
+    			}
+    		}
+    	}
+    	if (comboid.length > 0) {
+    		for (int i=0;i<comboid.length;i++) {
+    			Combo combo = Combo.findById(comboid[i]);
+    			if (combo != null) {
+    				OrderDetail detail = new OrderDetail();
+    				detail.combo = combo;
+    				detail.price = combo.price.price;
+    				detail.num = 1;
+    				detail.save();
+    				order.addOrderDetail(detail);
+    			}
+    		}
+    	}
     }
 
     public static void deleteOrder(Long[] id) {
