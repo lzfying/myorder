@@ -3,14 +3,14 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import play.data.binding.As;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 @Entity
@@ -33,6 +33,7 @@ public class Order extends Model{
 	@ManyToMany(cascade=CascadeType.ALL)
 	public List<OrderDetail> orderDetails;
 	
+	@As("yyyy-MM-dd hh:mm:ss")
 	public Date date;
 	
 	public String receiver_name;
