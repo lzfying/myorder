@@ -57,8 +57,9 @@ public class AdminUsers extends Controller {
     	obj.addProperty("id", user.id);
         obj.addProperty("username", user.username);
         obj.addProperty("email", user.email);
+        obj.addProperty("realname", user.userDetail.realname);
         if (user.userDetail != null) {
-        	obj.addProperty("sex", user.userDetail.sex);
+        	obj.addProperty("sex", user.userDetail.sex==1?"男":"女");
         	List<UserAddress> addrlist = user.userDetail.address;
         	if (addrlist != null) {
         		StringBuffer sb = new StringBuffer();

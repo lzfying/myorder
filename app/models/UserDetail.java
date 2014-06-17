@@ -30,8 +30,8 @@ public class UserDetail extends Model{
     public String mail;
 	
 	@Required
-    @MaxSize(2)
-    public String sex;
+    @MaxSize(1)
+    public int sex;
 	
 	@OneToOne(mappedBy="userDetail", cascade=CascadeType.ALL)
     @Required
@@ -40,7 +40,7 @@ public class UserDetail extends Model{
 	
 	public int point=0;//积分
 	
-	public UserDetail(String realname, List<UserAddress> address, String mail, String sex, User user, int point) {
+	public UserDetail(String realname, List<UserAddress> address, String mail, int sex, User user, int point) {
 		this.realname = realname;
 		this.address = address;
 		this.mail = mail;
