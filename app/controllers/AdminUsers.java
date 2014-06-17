@@ -60,9 +60,6 @@ public class AdminUsers extends Controller {
         if (user.userDetail != null) {
         	obj.addProperty("sex", user.userDetail.sex);
         	List<UserAddress> addrlist = user.userDetail.address;
-        	
-        	System.out.println(addrlist + "-----------" + addrlist.size());
-        	
         	if (addrlist != null) {
         		StringBuffer sb = new StringBuffer();
         		for (int i=0;i<addrlist.size();i++) {

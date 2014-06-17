@@ -22,7 +22,7 @@ public class UserDetail extends Model{
     public String realname;
 	
 	
-    @OneToMany(mappedBy="userDetail",cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL)
     public List<UserAddress> address;
 	
 	
