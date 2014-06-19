@@ -38,6 +38,8 @@ public class Order extends Model{
 	
 	public String receiver_name;
 	
+	public String area;
+	
 	public String receiver_addr;
 	
 	public String receiver_tel;

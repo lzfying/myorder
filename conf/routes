@@ -27,6 +27,7 @@ POST     /admin/order/saveOrder                  AdminOrders.saveOrder
 POST     /admin/order/deleteOrder                AdminOrders.deleteOrder
 GET      /admin/order/getOrderInfo               AdminOrders.getOrderInfo
 GET      /admin/order/getOrderPaymentid          AdminOrders.getOrderPaymentId
+GET      /admin/order/getComboMeals              AdminOrders.getComboMeals
 
 
 GET      /admin/user/useradmin                   AdminUsers.adminUser

@@ -67,6 +67,9 @@ public class AdminOrders extends Controller {
     
     private static JsonObject getOrderJsonObj(Order order) {
     	JsonObject obj = new JsonObject();
+    	if (order == null) {
+    		return obj;
+    	}
         obj.addProperty("orderid", order.id);
         obj.addProperty("ordernum", order.orderNum);
         if (order.date != null) {
@@ -78,27 +81,67 @@ public class AdminOrders extends Controller {
         obj.addProperty("tel", order.receiver_tel);
         obj.addProperty("name", order.receiver_name);
         obj.addProperty("others", order.receiver_other);
+        obj.addProperty("area", order.area);
         
         if (order.orderDetails != null && order.orderDetails.size() > 0) {
         	StringBuffer sb = new StringBuffer();
+        	JsonArray detailarray = new JsonArray();
         	for (OrderDetail detail: order.orderDetails) {
+        		JsonObject mealJson = new JsonObject();
+        		JsonObject id = new JsonObject();
         		if (detail.meal != null) {
+        			mealJson.addProperty("id", detail.meal.id);
+        			mealJson.addProperty("name", detail.meal.name);
+        			mealJson.addProperty("type", "菜品");
+        			if (detail.meal.price != null) {
+        				mealJson.addProperty("price", detail.meal.price.price);
+        			}
+        			mealJson.addProperty("discount", detail.meal.price.discount);
+        			detailarray.add(mealJson);
+        			
         			sb.append(detail.meal.name);
+        			id.addProperty("meal", detail.meal.id);
         		} else if (detail.combo != null) {
+        			mealJson.addProperty("id", detail.combo.id);
+        			mealJson.addProperty("name", detail.combo.name);
+        			mealJson.addProperty("type", "套餐");
+        			if (detail.combo.price != null) {
+        				mealJson.addProperty("price", detail.combo.price.price);
+        			}
+        			mealJson.addProperty("discount", detail.combo.price.discount);
+        			detailarray.add(mealJson);
+        			
         			sb.append(detail.combo.name);
+        			id.addProperty("combo", detail.combo.id);
         		}
         		sb.append("<br>");
         	}
         	obj.addProperty("content", sb.toString());
+        	obj.add("meals", detailarray);
         }
         return obj;
     }
     
     @Transactional
     public static void saveOrder(Order order, Long[] mealid, Long[] comboid) {
-    	System.out.println("==========" + order.date);
-    	order.save();
-    	if (mealid.length > 0) {
+    	Order saveOrder = Order.find("byOrderNum", order.orderNum).first();
+    	
+    	if (saveOrder != null) {
+    		saveOrder.date = order.date;
+    		saveOrder.receiver_name = order.receiver_name;
+    		saveOrder.receiver_addr = order.receiver_addr;
+    		saveOrder.receiver_tel = order.receiver_tel;
+    		saveOrder.receiver_other = order.receiver_other;
+    		saveOrder.payWay = order.payWay;
+    		saveOrder.orderstate = order.orderstate;
+    		saveOrder.orderPrice = order.orderPrice;
+    		saveOrder.area = order.area;
+    		saveOrder.orderDetails.clear();
+    	} else {
+    		order.save();
+    	}
+    	
+    	if (mealid != null && mealid.length > 0) {
     		for(int i=0;i<mealid.length;i++) {
     			Meal meal = Meal.findById(mealid[i]);
     			if (meal != null) {
@@ -107,11 +150,15 @@ public class AdminOrders extends Controller {
     				detail.price = meal.price.price;
     				detail.num = 1;
     				detail.save();
-    				order.addOrderDetail(detail);
+    				if(saveOrder != null) {
+    					saveOrder.addOrderDetail(detail);
+    				} else {
+    					order.addOrderDetail(detail);
+    				}
     			}
     		}
     	}
-    	if (comboid.length > 0) {
+    	if (comboid != null && comboid.length > 0) {
     		for (int i=0;i<comboid.length;i++) {
     			Combo combo = Combo.findById(comboid[i]);
     			if (combo != null) {
@@ -120,7 +167,11 @@ public class AdminOrders extends Controller {
     				detail.price = combo.price.price;
     				detail.num = 1;
     				detail.save();
-    				order.addOrderDetail(detail);
+    				if (saveOrder != null) {
+    					saveOrder.addOrderDetail(detail);
+    				} else {
+    					order.addOrderDetail(detail);
+    				}
     			}
     		}
     	}
@@ -153,5 +204,40 @@ public class AdminOrders extends Controller {
     	obj.addProperty("paymentid", paymentID);
     	obj.addProperty("date", odate);
     	renderText(obj);
+    }
+    
+    
+    public static void getComboMeals() {
+    	List<Meal> mealList = Meal.findAll();
+    	List<Combo> comboList = Combo.findAll();
+    	JsonObject json = new JsonObject();
+    	JsonArray array = new JsonArray();
+    	if (mealList != null || comboList != null) {
+    		if (mealList.size() > 0) {
+    			for (Meal meal: mealList) {
+    				JsonObject obj = new JsonObject();
+    				obj.addProperty("id", meal.id);
+    				obj.addProperty("type", "菜品");
+    				obj.addProperty("name", meal.name);
+    				obj.addProperty("price", meal.price.price);
+    				obj.addProperty("discount", meal.price.discount);
+    				array.add(obj);
+    			}
+    		}
+    		if (comboList.size() > 0) {
+    			for (Combo combo: comboList) {
+    				JsonObject obj = new JsonObject();
+    				obj.addProperty("id", combo.id);
+    				obj.addProperty("type", "套餐");
+    				obj.addProperty("name", combo.name);
+    				obj.addProperty("price", combo.price.price);
+    				obj.addProperty("discount", combo.price.discount);
+    				array.add(obj);
+    			}
+    		}
+    	}
+        json.addProperty("total", array.size());
+        json.add("rows", array);
+        renderText(json);
     }
 }

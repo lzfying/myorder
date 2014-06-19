@@ -22,5 +22,7 @@ public class OrderDetail extends Model {
 	public String priceType;
 	
 	public int totalNum;
+	
+	public String des;
 
 }
