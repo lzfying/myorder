@@ -10,6 +10,7 @@ GET     /orderForm                              Application.doOrder
 
 GET     /saveOrder                              Application.saveOrder
 
+GET     /admin/dic/getAreaInfo                  AdminDic.getAreaInfo
 
 # Adminstration
 #GET     /admin/?                                Admin.index
@@ -18,34 +19,33 @@ GET     /saveOrder                              Application.saveOrder
 #GET     /admin/new                              Admin.form
 #POST    /admin/new                              Admin.save
 #*       /admin                                  module:crud
-GET      /admin                                  Admin.admin
-GET      /admin/index                            Admin.admin
-GET      /admin/treenode                         Admin.getFuncTreeNode
-GET      /admin/order/orderadmin                 AdminOrders.adminOrder
-GET      /admin/order/getorders                  AdminOrders.getOrders
-POST     /admin/order/saveOrder                  AdminOrders.saveOrder
-POST     /admin/order/deleteOrder                AdminOrders.deleteOrder
-GET      /admin/order/getOrderInfo               AdminOrders.getOrderInfo
-GET      /admin/order/getOrderPaymentid          AdminOrders.getOrderPaymentId
-GET      /admin/order/getComboMeals              AdminOrders.getComboMeals
+GET      /admin                                 Admin.admin
+GET      /admin/index                           Admin.admin
+GET      /admin/treenode                        Admin.getFuncTreeNode
+GET      /admin/order/orderadmin                AdminOrders.adminOrder
+GET      /admin/order/getorders                 AdminOrders.getOrders
+POST     /admin/order/saveOrder                 AdminOrders.saveOrder
+POST     /admin/order/deleteOrder               AdminOrders.deleteOrder
+GET      /admin/order/getOrderInfo              AdminOrders.getOrderInfo
+GET      /admin/order/getOrderPaymentid         AdminOrders.getOrderPaymentId
+GET      /admin/order/getComboMeals             AdminOrders.getComboMeals
 
 
-GET      /admin/user/useradmin                   AdminUsers.adminUser
-GET      /admin/user/getUsers                    AdminUsers.getUsers
-POST     /admin/user/saveUser                    AdminUsers.saveUser
-POST     /admin/user/deleteUser                  AdminUsers.deleteUser
-GET      /admin/user/getUserInfo                 AdminUsers.getUserInfo
+GET      /admin/user/useradmin                  AdminUsers.adminUser
+GET      /admin/user/getUsers                   AdminUsers.getUsers
+POST     /admin/user/saveUser                   AdminUsers.saveUser
+POST     /admin/user/deleteUser                 AdminUsers.deleteUser
+GET      /admin/user/getUserInfo                AdminUsers.getUserInfo
 
 
-GET      /admin/meal/mealadmin                   AdminMeals.adminMeal
-GET      /admin/meal/getMeals                    AdminMeals.getMeals
-GET      /admin/meal/getmealtype                 AdminMeals.getMealType
-POST     /admin/meal/saveMeal                    AdminMeals.saveMeal
-POST     /admin/meal/deleteMeal                  AdminMeals.deleteMeal
-
-GET      /admin/combo/comboadmin                 AdminCombos.adminCombo
-POST     /admin/combo/saveCombo                  AdminCombos.saveCombo
-GET      /admin/combo/getCombos                  AdminCombos.getCombos
+GET      /admin/meal/mealadmin                  AdminMeals.adminMeal
+GET      /admin/meal/getMeals                   AdminMeals.getMeals
+GET      /admin/meal/getmealtype                AdminMeals.getMealType
+POST     /admin/meal/saveMeal                   AdminMeals.saveMeal
+POST     /admin/meal/deleteMeal                 AdminMeals.deleteMeal
+GET      /admin/combo/comboadmin                AdminCombos.adminCombo
+POST     /admin/combo/saveCombo                 AdminCombos.saveCombo
+GET      /admin/combo/getCombos                 AdminCombos.getCombos
 
 # Import Secure routes
 *       /                                       module:secure

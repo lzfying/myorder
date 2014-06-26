@@ -15,9 +15,24 @@
                 <th data-options="field:'ck',checkbox:true"></th>
                 <th data-options="field:'username',width:100,align:'center'">用户名</th>
                 <th data-options="field:'email',width:130,align:'center'">邮箱</th>
-                <th data-options="field:'sex',width:40,align:'center'">性别</th>
+                <th data-options="field:'sex',width:40,align:'center',formatter:function(val,rec){
+                    if (val == '1') {
+                        return '男';
+                    } else if (val == '2') {
+                        return '女';
+                    }
+                }">性别</th>
                 <th data-options="field:'realname',width:100,align:'center'">真实姓名</th>
-                <th data-options="field:'address',width:240,align:'center'">地址</th>
+                <th data-options="field:'address',width:500,align:'center',formatter:function(val,rec){
+                    var address = '<table>';                    
+                    for (i=0;i<val.length;i++) {
+                        address+='<tr>'
+                        address+='<td>地址：</td><td width=300 align=left>' + val[i].address + '</td>' + '<td>电话：</td><td width=200 align=left>'+val[i].phone+'</td>';
+                        address+='</tr>'
+                    }
+                    address += '</table>'
+                    return address;
+                }">地址</th>
                 <th data-options="field:'ordernum',width:60,align:'center'">订单数量</th>
                 <th data-options="field:'others',width:200,align:'center'">备注</th>
             </tr>
@@ -49,17 +64,96 @@
                         <option value="2">女</option>
                     </select>
                 </tr>
+            </table>
+            <input type="hidden" name="user.id" id="user.id"/>
+        #{/form}
+            <table cellpadding="5">
                 <tr>
                     <td>地址：</td>
-                    <td><input class="easyui-validatebox textbox" type="text" name="user.userDetail.address[0].address" data-options="required:true" style="width:150px"></input></td>
+                    <td>
+                    <select id="input_area" name="input_area">
+                        <option value="370199" selected="selected">高新区</option>
+                        <option value="370102">历下区</option>
+                    </select>
+                    </td>
+                    <td><input class="easyui-validatebox textbox" type="text" id="input_address" name="input_address" data-options="required:false" style="width:150px"></input></td>
                     <td>电话:</td>
-                    <td><input class="easyui-validatebox textbox" type="text" name="user.userDetail.address[0].phone" data-options="required:true" style="width:150px"></input></td>
+                    <td><input class="easyui-validatebox textbox" type="text" id="input_phone" name="input_phone" data-options="required:false" style="width:150px"></input></td>
+                    <td><input type="button" value="确定" onClick="chooseAddress()"></td>
                 </tr>
             </table>
-        #{/form}
+            <table id="addressdatas"  class="easyui-datagrid" style="border: false; width: auto; height: auto" data-options="singleSelect: true,onClickRow:onClickRow">
+                <thead>
+                    <tr>
+                        <th data-options="field:'id',width:0,hidden:true">ID</th>
+                        <th data-options="field:'area',width:50,align:'center',
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                valueField:'code',
+                                textField:'name',
+                                method: 'get',
+                                url:'/admin/dic/getAreaInfo',
+                                required:true
+                            }
+                        }">行政区</th>
+                        <th data-options="field:'address',width:180,align:'center',editor:'text'">地址</th>
+                        <th data-options="field:'phone',width:80,align:'center',editor:'numberbox'">电话</th>
+                        <th data-options="field:'oper',width:60,align:'center'">操作</th>
+                    </tr>
+                </thead>
+            </table>
     </div> 
     <script type="text/javascript">
+    var editIndex = undefined;
+	    function endEditing(){
+	        if (editIndex == undefined){return true}
+	        if ($('#addressdatas').datagrid('validateRow', editIndex)){
+	            var ed = $('#addressdatas').datagrid('getEditor', {index:editIndex,field:'code'});
+	            var name = $(ed.target).combobox('getText');
+	            $('#addressdatas').datagrid('getRows')[editIndex]['name'] = name;
+	            $('#addressdatas').datagrid('endEdit', editIndex);
+	            editIndex = undefined;
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	    function onClickRow(index){
+	        if (editIndex != index){
+	            if (endEditing()){
+	                $('#addressdatas').datagrid('selectRow', index)
+	                        .datagrid('beginEdit', index);
+	                editIndex = index;
+	            } else {
+	                $('#addressdatas').datagrid('selectRow', editIndex);
+	            }
+	        }
+	    }
+    
+	    function chooseAddress() {
+	        var input_address = $('#input_address').val();
+	        var input_area = $('#input_area').val();
+	        var input_phone = $('#input_phone').val();
+	        
+	        var index = $('#addressdatas').datagrid('getRows').length;
+	        var row = $('#addressdatas').datagrid('appendRow',{
+	        	area:input_area,
+	        	address:input_address,
+	        	phone:input_phone,
+	            oper:"<a onclick='deleteaddressrow("+index+")'><font color='0000ff'>删除</font></a>"
+	        });
+	        $('#input_address').val('');
+	        $('#input_phone').val('');
+	    }
+	    
+	    function deleteaddressrow(row) {
+	        $('#addressdatas').datagrid('deleteRow',row);
+	    }
+    
         $("#add").click(function() {
+        	$('#dataform').form('clear');
             $('#editdialog').dialog('open');
         });
         
@@ -74,20 +168,34 @@
                 type:'GET',
                 data:id,
                 success:function(data){
+                	
+                	$('#addressdatas').datagrid({
+                        data: []
+                    });
+                	
                     var obj = JSON.parse(data);
                     var sex = obj.sex;
-                    if (sex == '男') {
-                    	sex = 1;
-                    } else {
-                    	sex = 2;
-                    }
                     $('#sex').val(sex);
                     $('#dataform').form('load',{
+                    	'user.id':obj.id,
                     	'user.username':obj.username,
                     	'user.userDetail.realname':obj.realname,
-                    	'user.email':obj.email,
-                    	'user.address[0].address':obj.address
+                    	'user.email':obj.email
                     });
+                    
+                    var address = obj.address;
+                    for (i=0;i<address.length;i++) {
+                        var r = address[i];
+                        var index = $('#addressdatas').datagrid('getRows').length;
+                        var mealrow = $('#addressdatas').datagrid('appendRow',{
+                            id:r.id,
+                            area:r.area,
+                            address:r.address,
+                            phone:r.phone,
+                            oper:"<a onclick='deleteaddressrow("+index+")'><font color='0000ff'>删除</font></a>"
+                        });
+                    }
+                    
                     $("#editdialog").dialog("open");
                     
                 },  
@@ -139,11 +247,26 @@
                 iconCls : 'icon-save',
                 handler : function() {
 //                  $('#orderform').submit();
+                    var useraddr = '';
+                    var rows = $('#addressdatas').datagrid('getRows');
+                    
+                    
+                    for (i=0;i<rows.length;i++) {
+                    	var row = rows[i];
+                    	useraddr += '&'
+                    	useraddr += 'user.userDetail.address['+i+'].address='+row.address;
+                    	useraddr += '&';
+                    	useraddr += 'user.userDetail.address['+i+'].phone='+row.phone;
+                    	useraddr += '&';
+                    	useraddr += 'user.userDetail.address['+i+'].area='+row.area;
+                    }
+
+
                     var form = $("#dataform"); 
                     $.ajax({  
                         url:form.attr('action'),  
                         type:form.attr('method'),  
-                        data:form.serialize(),  
+                        data:form.serialize() + useraddr,  
                         success:function(data){  
                             $("#editdialog").dialog("close");
                             $("#datas").datagrid("reload");

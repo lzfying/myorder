@@ -124,19 +124,21 @@ public class AdminOrders extends Controller {
     
     @Transactional
     public static void saveOrder(Order order, Long[] mealid, Long[] comboid) {
-    	Order saveOrder = Order.find("byOrderNum", order.orderNum).first();
-    	
-    	if (saveOrder != null) {
-    		saveOrder.date = order.date;
-    		saveOrder.receiver_name = order.receiver_name;
-    		saveOrder.receiver_addr = order.receiver_addr;
-    		saveOrder.receiver_tel = order.receiver_tel;
-    		saveOrder.receiver_other = order.receiver_other;
-    		saveOrder.payWay = order.payWay;
-    		saveOrder.orderstate = order.orderstate;
-    		saveOrder.orderPrice = order.orderPrice;
-    		saveOrder.area = order.area;
-    		saveOrder.orderDetails.clear();
+    	Order saveOrder = null;
+    	if (order.id != null) {
+    		saveOrder = Order.find("byOrderNum", order.orderNum).first();
+        	if (saveOrder != null) {
+        		saveOrder.date = order.date;
+        		saveOrder.receiver_name = order.receiver_name;
+        		saveOrder.receiver_addr = order.receiver_addr;
+        		saveOrder.receiver_tel = order.receiver_tel;
+        		saveOrder.receiver_other = order.receiver_other;
+        		saveOrder.payWay = order.payWay;
+        		saveOrder.orderstate = order.orderstate;
+        		saveOrder.orderPrice = order.orderPrice;
+        		saveOrder.area = order.area;
+        		saveOrder.orderDetails.clear();
+        	}
     	} else {
     		order.save();
     	}

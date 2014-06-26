@@ -8,12 +8,13 @@ import javax.persistence.Table;
 import play.db.jpa.Model;
 
 @Entity
-@Table(name="back_useraddress")
+@Table(name="back_customeraddress")
 public class UserAddress extends Model {
 
     @ManyToOne
     public UserDetail userDetail;
 
+    public String area;
     public String address;
     public String phone;
 

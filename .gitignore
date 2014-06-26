@@ -5,5 +5,4 @@
 .classpath
 .project
 tmp/
-eclipse/classes/
-eclipse/classes/models/
+eclipse/

@@ -59,26 +59,35 @@ public class AdminUsers extends Controller {
         obj.addProperty("email", user.email);
         obj.addProperty("realname", user.userDetail.realname);
         if (user.userDetail != null) {
-        	obj.addProperty("sex", user.userDetail.sex==1?"男":"女");
+        	obj.addProperty("sex", user.userDetail.sex);
         	List<UserAddress> addrlist = user.userDetail.address;
+        	JsonArray array = new JsonArray();
         	if (addrlist != null) {
-        		StringBuffer sb = new StringBuffer();
         		for (int i=0;i<addrlist.size();i++) {
         			UserAddress addr  = addrlist.get(i);
-        			String addrphone = addr.address +"    " + addr.phone;
-        			sb.append(addrphone);
-        			if (i != addrlist.size() - 1) {
-        				sb.append("\n");
-        			}
+        			JsonObject addrobj = new JsonObject();
+        			addrobj.addProperty("address", addr.address);
+        			addrobj.addProperty("phone", addr.phone);
+        			addrobj.addProperty("area", addr.area);
+        			array.add(addrobj);
         		}
-        		obj.addProperty("address", sb.toString());
         	}
+        	obj.add("address", array);
         }
         return obj;
     }
     
     public static void saveUser(User user) {
-    	user.save();
+    	if (user.id != null) {
+    		User saveUser = User.findById(user.id);
+    		saveUser.username = user.username;
+    		saveUser.password = user.password;
+    		saveUser.email = user.email;
+    		saveUser.userDetail = user.userDetail;
+    		saveUser.save();
+    	} else {
+    		user.save();
+    	}
     }
     
     public static void deleteUser(Long[] id) {

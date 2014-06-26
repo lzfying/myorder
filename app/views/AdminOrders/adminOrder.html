@@ -106,6 +106,7 @@
 	                </tr>
                 </thead>
             </table>
+            <input type="hidden" name="order.id" id="order.id"/>
         #{/form}
     </div> 
 	<script type="text/javascript">
@@ -187,6 +188,7 @@
                     });
                 	var obj = JSON.parse(data);
                 	$('#orderform').form('load',{
+                		'order.id':obj.orderid,
                 		'order.orderNum':obj.ordernum,
                 		'order.date':obj.date,
                 		'order.orderPrice':obj.orderprice,
@@ -200,7 +202,6 @@
                 	
                 	var meals = obj.meals;
                 	for (i=0;i<meals.length;i++) {
-                		console.log('------' + meals[i].name);
                 		var r = meals[i];
                 		var index = $('#mealdatas').datagrid('getRows').length;
                 		var mealrow = $('#mealdatas').datagrid('appendRow',{
