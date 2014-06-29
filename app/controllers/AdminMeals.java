@@ -41,6 +41,14 @@ public class AdminMeals extends Controller {
         return json;
     }
 
+	public static void getMealInfo(Long id) {
+		Meal meal = Meal.findById(id);
+		JsonObject obj = getMealJsonObj(meal);
+		obj.remove("type");
+		obj.addProperty("type", meal.type.mealType);
+		renderText(obj);
+	}
+
 	public static JsonObject getMealJsonObj(Meal meal) {
     	JsonObject obj = new JsonObject();
     	obj.addProperty("id", meal.id);

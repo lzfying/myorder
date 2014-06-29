@@ -27,9 +27,9 @@
     </table>
     <div id="tb" style="border: false; padding: 5px; height: auto">
         <div style="margin-bottom: 5px">
-            <a id="add" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
-            <a id="edit" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a> 
-            <a id="delete" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+            <a id="add" class="easyui-linkbutton" iconCls="icon-add" plain="true">添加菜品</a>
+            <a id="edit" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑菜品</a> 
+            <a id="delete" class="easyui-linkbutton" iconCls="icon-remove" plain="true">删除菜品</a>
         </div>
     </div>
     <div id="editdialog" style="padding:5px;width:600px;height:300px;top:100px" closed="true">
@@ -56,6 +56,7 @@
                      -->
                 </tr>
             </table>
+            <input type="hidden" name="meal.id" id="meal.id"/>
         #{/form}
     </div> 
     <script type="text/javascript">
@@ -70,14 +71,18 @@
             }
             var id = "id=" + rows[0].id;
             $.ajax({
-                url:'/admin/user/getUserInfo',  
+                url:'/admin/meal/getMealInfo',  
                 type:'GET',
                 data:id,
                 success:function(data){
                     var obj = JSON.parse(data);
                     $('#dataform').form('load',{
-                    	'user.username':obj.username,
-                    	'user.email':obj.email
+                    	'meal.id':obj.id,
+                    	'meal.name':obj.name,
+                    	'meal.price.price':obj.price,
+                    	'meal.type.mealType':obj.type,
+                    	'meal.price.discount':obj.discount,
+                    	'meal.des':obj.des
                     });
                     $("#editdialog").dialog("open");
                     
@@ -123,7 +128,7 @@
         });
         
         $('#editdialog').dialog({
-            title : '订单编辑',
+            title : '菜品编辑',
             buttons : [
             {
                 text : '保存',

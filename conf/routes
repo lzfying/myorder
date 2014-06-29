@@ -43,6 +43,9 @@ GET      /admin/meal/getMeals                   AdminMeals.getMeals
 GET      /admin/meal/getmealtype                AdminMeals.getMealType
 POST     /admin/meal/saveMeal                   AdminMeals.saveMeal
 POST     /admin/meal/deleteMeal                 AdminMeals.deleteMeal
+GET     /admin/meal/getMealInfo                AdminMeals.getMealInfo
+
+
 GET      /admin/combo/comboadmin                AdminCombos.adminCombo
 POST     /admin/combo/saveCombo                 AdminCombos.saveCombo
 GET      /admin/combo/getCombos                 AdminCombos.getCombos
