@@ -143,6 +143,10 @@
         }
 	    
         $("#add").click(function() {
+        	$('#mealdatas').datagrid({
+                data: []
+            });
+            $('#dataform').form('clear');
             $('#editdialog').dialog('open');
         });
         
