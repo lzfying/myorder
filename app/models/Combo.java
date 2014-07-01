@@ -18,7 +18,7 @@ public class Combo extends Model {
 
 	public String name;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	public List<ComboDetail> details;
 
 	@OneToOne(cascade=CascadeType.ALL)
@@ -41,4 +41,5 @@ public class Combo extends Model {
     	this.save();
     	return this;
     }
+    
 }
